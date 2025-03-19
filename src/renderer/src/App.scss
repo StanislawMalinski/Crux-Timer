@@ -1,0 +1,82 @@
+.app {
+    text-align: center;
+    background-color: #000000;  
+    height: 100vh;  
+    
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+  
+    * {
+      align-items: center;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    };
+  
+    .logo {
+      display: flex;
+      justify-self: center;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1/1;
+      height: 200px;    
+  
+        
+      .WLB-logo-img {
+        max-height: 100%;
+        height: 50%;
+      }
+      img {
+        max-height: 100%;
+        display: block;
+        width: 100%;
+      }  
+    }
+  
+    .timer-container {
+      grid-column-start: 1;
+      grid-column-end: 4;
+      .timer-display {
+        color: #ffffff;
+        font-size: 15rem;
+      }
+  
+      .blink_me {
+        color: #ff0000;
+        animation: blinker 1s linear infinite;
+      }
+      
+      @keyframes blinker {  
+        50% { opacity: 0; }
+      }
+    }
+  
+    .options {
+      color: #ffffff;
+      * {
+        margin: 10px;
+      }
+    }
+  
+    .sponsors {
+      grid-column-start: 1;
+      grid-column-end: 4;
+      display:flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+  
+      .logo {
+        height: 120px;
+        margin: 10px;
+  
+        .Sponsor-Logo-img {
+          max-height: 100%;
+          //height: 50%;
+        }
+      }
+    }
+  }
