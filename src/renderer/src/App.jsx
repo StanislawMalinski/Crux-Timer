@@ -27,20 +27,21 @@ const sponspors = [
   true_logo
 ];
 
+
+
 function App() {
   const [runs, setRuns] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [initialTime, setInitialTime] = useState(4 *  60 * 1000);
-  const [elapsedTime, setElapsedTime] = useState(formatTime(initialTime));
+  const [elapsedTime, setElapsedTime] = useState(4 * 60 * 1000);
   const [finish, setFinish] = useState(false);
-  const [showOpts, setShowOpts] = useState(false);
   const [iniSeconds, setIniSeconds] = useState(Math.floor(initialTime / 1000) % 60);
   const [iniMinutes, setIniMinutes] = useState(Math.floor(initialTime / 1000 / 60));
 
   function startTimer() {
     setRuns(true);
     setFinish(false);
-    setStartTime(Date.now());
+    setStartTime(Date.now() + elapsedTime - initialTime);
   }
 
   function stopTimer() {
@@ -51,7 +52,7 @@ function App() {
   function resetTimer() {
     setRuns(false);
     setFinish(false);
-    setElapsedTime(formatTime(initialTime));
+    setElapsedTime(initialTime);
   }
 
   function keyDownHandler(event) {
@@ -65,25 +66,32 @@ function App() {
         resetTimer();
         break;
       case "f":
-        setShowOpts(!showOpts);
-        resetTimer();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
         break;
       case "1":
+        if (runs) break;
         setInitialTime(1 * 60 * 1000);
         setIniMinutes(1);
         setIniSeconds(0);
-        resetTimer();
         break;
       case "4":
+        if (runs) break;
         setInitialTime(4 * 60 * 1000);
         setIniMinutes(4);
         setIniSeconds(0);
-        resetTimer();
         break;
       default:
         break;
     }
   }
+
+  useEffect(() => {
+    resetTimer();
+  }, [initialTime]);
 
   function formatTime(time) {
     let miliseconds = "" + Math.floor(time % 1000 / 10);
@@ -92,7 +100,7 @@ function App() {
     miliseconds = miliseconds.length < 2 ? "0" + miliseconds : miliseconds;
     seconds = seconds.length < 2 ? "0" + seconds : seconds;
     minutes = minutes.length < 2 ? "0" + minutes : minutes;
-    return `${minutes}:${seconds}:${miliseconds}`;
+    return `${minutes}:${seconds}`;
   }
 
   useEffect(() => {
@@ -100,11 +108,11 @@ function App() {
       const interval = setInterval(() => {
         const currentTime = Date.now();
         const elapsedTime = initialTime + startTime - currentTime;
-        setElapsedTime(formatTime(elapsedTime));
+        setElapsedTime(elapsedTime);
         if (elapsedTime <= 0) {
           setRuns(false);
           setFinish(true);
-          setElapsedTime(formatTime(0));
+          setElapsedTime(0);
           clearInterval(interval);
         }
       }, 10);
@@ -137,14 +145,8 @@ function App() {
             <img src={wlb_logo} className="WLB-Logo-img" alt="logo" />
           </div>
         <div className="timer-container">
-          <div className={finish ? "timer-display blink_me" :"timer-display "}>{elapsedTime}</div>
+          <div className={finish ? "timer-display blink_me" :"timer-display "}>{formatTime(elapsedTime)}</div>
         </div>
-        {showOpts && <div className="options">
-          <label>Minutes</label>
-          <input type="number" value={iniMinutes} onChange={(e) => setIniMinutes(e.target.value)} />
-          <label>Seconds</label>
-          <input type="number" value={iniSeconds} onChange={(e) => setIniSeconds(e.target.value)} />
-        </div>}
         <div className="sponsors">
           {sponspors.map(sponsorWrapper)}
         </div>
