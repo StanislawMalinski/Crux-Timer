@@ -78,6 +78,12 @@ function App() {
         setIniMinutes(1);
         setIniSeconds(0);
         break;
+      case "2":
+        if (runs) break;
+        setInitialTime(2 * 60 * 1000);
+        setIniMinutes(2);
+        setIniSeconds(0);
+        break;
       case "4":
         if (runs) break;
         setInitialTime(4 * 60 * 1000);
